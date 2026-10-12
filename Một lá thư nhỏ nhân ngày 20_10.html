@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Một lá thư nhỏ nhân ngày 20/10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500&family=Charm:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#FFF3F7; --bg2:#FFD6E5; --glow:rgba(255,255,255,.75);
+  --paper:#FFFDFE; --note:#FFE9F0; --line:#FBDCE7; --margin:#F7B4CB;
+  --n1:#FFE1EB; --n2:#FFE6D8; --n3:#F1E3F8;
+  --sky1:#FFE3EE; --sky2:#FFF7F1;
+  --ink:#5E2640; --soft:#8C5069;
+  --berry:#B93D75; --rose:#F48FB1; --petal:#FFC1D6;
+  --btn:#B93D75; --sage:#A9D3B3; --hill:#CFE8D4;
+  --shadow:rgba(185,61,117,.2);
+  --blob:.5;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg1:#2A1320; --bg2:#3D1B2E; --glow:rgba(255,141,183,.12);
+    --paper:#45212F; --note:#512739; --line:#5A2E41; --margin:#8E4260;
+    --n1:#5A2A3E; --n2:#573330; --n3:#47304F;
+    --sky1:#4A2335; --sky2:#5A2B3F;
+    --ink:#FFE6EE; --soft:#EBBACB;
+    --berry:#FF8DB7; --rose:#F48FB1; --petal:#E87AA2;
+    --sage:#6FA583; --hill:#3E6B52; --shadow:rgba(0,0,0,.35); --blob:.22;
+  }
+}
+:root[data-theme="dark"]{
+  --bg1:#2A1320; --bg2:#3D1B2E; --glow:rgba(255,141,183,.12);
+  --paper:#45212F; --note:#512739; --line:#5A2E41; --margin:#8E4260;
+  --n1:#5A2A3E; --n2:#573330; --n3:#47304F;
+  --sky1:#4A2335; --sky2:#5A2B3F;
+  --ink:#FFE6EE; --soft:#EBBACB;
+  --berry:#FF8DB7; --rose:#F48FB1; --petal:#E87AA2;
+  --sage:#6FA583; --hill:#3E6B52; --shadow:rgba(0,0,0,.35); --blob:.22;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;min-height:100%;
+  background:
+    radial-gradient(70% 40% at 12% 0%,var(--glow),transparent 70%),
+    linear-gradient(170deg,var(--bg1) 0%,var(--bg2) 100%) fixed;
+  color:var(--ink);
+  font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-weight:300;font-size:16px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.hand{font-family:"Charm","Dancing Script","Segoe Script",cursive;font-weight:400}
+svg{display:block}
+
+/* ---------- nền động ---------- */
+.blob{position:fixed;z-index:0;border-radius:50%;filter:blur(55px);opacity:var(--blob);pointer-events:none;animation:drift 20s ease-in-out infinite alternate}
+.blob.a{width:240px;height:240px;left:-70px;top:8%;background:#FFB3CE}
+.blob.b{width:280px;height:280px;right:-90px;bottom:6%;background:#FFD2C2;animation-delay:-8s}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(36px,48px)}}
+.petals{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.petal{position:absolute;top:-30px;background:var(--petal);opacity:.75;border-radius:150% 0 150% 0;animation:fall linear infinite;will-change:transform}
+@keyframes fall{
+  0%{transform:translate3d(0,-8vh,0) rotate(0deg)}
+  50%{transform:translate3d(calc(var(--dx) * .5),55vh,0) rotate(200deg)}
+  100%{transform:translate3d(var(--dx),112vh,0) rotate(400deg)}
+}
+
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 22px}
+
+/* ---------- nút tuỳ chỉnh ---------- */
+.gear{
+  position:fixed;z-index:20;right:14px;top:calc(env(safe-area-inset-top,0px) + 12px);
+  font:inherit;font-size:13px;font-weight:400;color:var(--ink);
+  background:color-mix(in srgb,var(--paper) 80%,transparent);
+  border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.gear:focus-visible,.btn:focus-visible,.sheet button:focus-visible,.sheet select:focus-visible,.sheet input:focus-visible,.garden:focus-visible,.hint:focus-visible{outline:3px solid var(--berry);outline-offset:3px}
+
+/* ---------- màn phong bì ---------- */
+.intro{
+  min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:26px;padding:70px 0 50px;
+  transition:opacity .9s ease,transform .9s cubic-bezier(.4,0,.2,1);
+}
+.intro[hidden]{display:none}
+.intro.fixed{position:fixed;top:0;left:0;right:0;height:100svh;min-height:0;z-index:6}
+.intro.leave{opacity:0;transform:translateY(-34px) scale(1.04);pointer-events:none}
+.intro .pre{font-size:38px;line-height:1.2;color:var(--berry);margin:0}
+.intro .to{margin:0;color:var(--soft);font-size:15px}
+.env-wrap{position:relative;animation:bob 4.2s ease-in-out infinite;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.intro.opened .env-wrap{animation:none;cursor:default}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.spark{position:absolute;width:18px;height:18px;fill:var(--rose);animation:twinkle 2.8s ease-in-out infinite;pointer-events:none}
+.spark.s1{left:-26px;top:20px}
+.spark.s2{right:-22px;top:-6px;width:24px;height:24px;animation-delay:-.9s}
+.spark.s3{right:-34px;bottom:34px;width:14px;height:14px;animation-delay:-1.7s}
+.spark.s4{left:-14px;bottom:-14px;width:22px;height:22px;animation-delay:-2.2s}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
+
+.env{
+  --w:min(76vw,300px);
+  width:var(--w);height:calc(var(--w) * .68);
+  position:relative;perspective:900px;margin-top:70px;
+  filter:drop-shadow(0 14px 22px var(--shadow));
+}
+.env .back{position:absolute;inset:0;background:#F59AB9;border-radius:10px}
+.env .paper{
+  position:absolute;left:7%;right:7%;top:8%;bottom:6%;z-index:2;
+  background:var(--paper);border-radius:6px;padding:16px 14px;
+  transition:transform 1s cubic-bezier(.3,.8,.3,1) .45s;
+}
+.env .paper i{display:block;height:5px;border-radius:3px;background:var(--line);margin-bottom:9px}
+.env .paper i:nth-child(2){width:78%}.env .paper i:nth-child(3){width:90%}.env .paper i:nth-child(4){width:55%}
+.env .front{
+  position:absolute;inset:0;z-index:3;border-radius:10px;
+  background:linear-gradient(180deg,#FFB9D0,#FFA7C3);
+  clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);
+}
+.env .flap{
+  position:absolute;left:0;right:0;top:0;height:60%;z-index:4;
+  background:linear-gradient(180deg,#FF93B8,#FFA9C6);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;
+  transition:transform .8s cubic-bezier(.5,0,.2,1),z-index 0s .35s;
+  border-radius:10px 10px 0 0;
+}
+.env .seal{
+  position:absolute;left:50%;top:56%;z-index:5;width:46px;height:46px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 35% 30%,#E0527F,#B93D75);
+  border-radius:50%;display:grid;place-items:center;
+  box-shadow:0 4px 10px rgba(120,30,70,.35);
+  transition:opacity .3s,transform .5s;
+}
+.env .seal svg{width:22px;height:22px;fill:#fff}
+.opened .flap{transform:rotateX(180deg);z-index:1}
+.opened .paper{transform:translateY(-62%)}
+.opened .seal{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+
+.btn{
+  font:inherit;font-weight:500;font-size:16px;color:#fff;background:var(--btn);
+  border:0;border-radius:999px;padding:14px 34px;cursor:pointer;
+  box-shadow:0 8px 20px var(--shadow);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.btn:active{transform:scale(.96)}
+.intro.opened .btn{opacity:.4;pointer-events:none}
+
+/* ---------- nội dung ---------- */
+.content{padding:76px 0 90px}
+.content[hidden]{display:none}
+.content.enter{animation:enter 1.1s cubic-bezier(.2,.8,.3,1) .25s both}
+@keyframes enter{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+
+.head{text-align:center;margin-bottom:34px}
+.crown{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin-bottom:2px}
+.crown svg{transform-origin:50% 100%;animation:sway 4.5s ease-in-out infinite}
+.crown svg:nth-child(1){width:34px;height:34px;fill:#FFB7CF;animation-delay:-1s}
+.crown svg:nth-child(2){width:54px;height:54px;fill:#FF8FB6;animation-delay:-2.2s}
+.crown svg:nth-child(3){width:34px;height:34px;fill:#FFC9B8;animation-delay:-.3s}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.head .date{font-size:108px;line-height:1;margin:0;letter-spacing:-1px;color:var(--berry);
+  background:linear-gradient(180deg,var(--berry) 20%,var(--rose));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.head .sub{
+  display:inline-block;margin:8px 0 0;padding:5px 18px;
+  color:var(--soft);font-size:14px;font-weight:400;
+  border:1px solid var(--line);border-radius:999px;
+  background:color-mix(in srgb,var(--paper) 60%,transparent);
+}
+
+/* lá thư */
+.letter{
+  position:relative;background-color:var(--paper);border-radius:16px;
+  padding:34px 22px 22px 48px;
+  box-shadow:0 20px 44px var(--shadow);
+  transform:rotate(-.5deg);
+  background-image:
+    linear-gradient(90deg,transparent 35px,var(--margin) 35px,var(--margin) 36px,transparent 36px),
+    repeating-linear-gradient(transparent 0 29px,var(--line) 29px 30px);
+  background-position:0 0,0 34px;
+}
+.letter::before{
+  content:"";position:absolute;top:-13px;left:50%;width:96px;height:26px;
+  transform:translateX(-50%) rotate(-3deg);border-radius:3px;
+  background:repeating-linear-gradient(45deg,rgba(255,163,196,.78) 0 7px,rgba(255,205,222,.78) 7px 14px);
+  box-shadow:0 2px 6px rgba(185,61,117,.18);
+}
+.letter .line{display:block;opacity:0;margin:0 0 30px;font-size:15.5px;line-height:30px;color:var(--ink)}
+.letter .line.on{opacity:1;animation:ink 1s ease both}
+@keyframes ink{from{opacity:0;transform:translateY(8px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+.letter .greet{font-size:34px;line-height:60px;color:var(--berry);margin:0}
+.letter .sign{margin:0;text-align:right;font-size:27px;line-height:30px;color:var(--berry)}
+.letter .sign span{display:block}
+.letter .sign small{display:block;font-family:"Be Vietnam Pro",sans-serif;font-size:13.5px;line-height:30px;color:var(--soft);font-weight:300}
+
+/* ngăn cách bằng hoa */
+.orn{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 20px}
+.orn span{flex:1;max-width:84px;height:1px;background:linear-gradient(90deg,transparent,var(--margin))}
+.orn span:last-child{transform:scaleX(-1)}
+.orn svg{width:26px;height:26px;fill:var(--rose)}
+
+.block{margin-top:70px}
+.block h2{font-size:32px;line-height:1.25;margin:0 0 6px;color:var(--berry);text-align:center}
+.block p.lead{text-align:center;color:var(--soft);margin:0 0 24px;font-size:14.5px}
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.3,1)}
+.js .rv.in{opacity:1;transform:none}
+
+/* mẩu giấy */
+.notes{display:flex;flex-direction:column;gap:20px}
+.note{
+  position:relative;border-radius:10px;padding:20px 18px 18px 54px;
+  font-size:15px;line-height:1.65;color:var(--ink);
+  box-shadow:0 10px 22px var(--shadow);
+  transition:transform .35s cubic-bezier(.3,1.4,.5,1);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.note::before{
+  content:"";position:absolute;top:-9px;left:50%;width:58px;height:18px;
+  transform:translateX(-50%) rotate(-2deg);border-radius:2px;
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.7) 0 6px,rgba(255,255,255,.4) 6px 12px);
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+.note:nth-child(1){background:var(--n1);transform:rotate(-1.6deg);margin-right:16px}
+.note:nth-child(2){background:var(--n2);transform:rotate(1.2deg);margin-left:16px}
+.note:nth-child(2)::before{transform:translateX(-50%) rotate(3deg)}
+.note:nth-child(3){background:var(--n3);transform:rotate(-.8deg);margin-right:6px}
+.note:active{transform:rotate(0) scale(1.03)}
+.note svg{position:absolute;left:18px;top:21px;width:22px;height:22px;fill:var(--rose)}
+
+/* khu vườn */
+.garden{
+  position:relative;height:290px;border-radius:26px;overflow:hidden;cursor:pointer;
+  background:
+    radial-gradient(circle at 84% 16%,rgba(255,232,170,.85) 0,rgba(255,232,170,0) 38%),
+    linear-gradient(180deg,var(--sky1),var(--sky2));
+  border:1px solid var(--line);
+  box-shadow:0 14px 34px var(--shadow);
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.garden::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:58px;pointer-events:none;
+  background:
+    radial-gradient(100px 34px at 14% 100%,var(--hill) 97%,transparent),
+    radial-gradient(130px 42px at 52% 100%,var(--hill) 97%,transparent),
+    radial-gradient(100px 32px at 92% 100%,var(--hill) 97%,transparent);
+}
+.garden .hint{
+  position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+  color:var(--soft);font-size:14.5px;pointer-events:none;transition:opacity .4s;
+}
+.garden .hint span{animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+.garden.planted .hint{opacity:0}
+.stem{position:absolute;width:2px;background:var(--sage);border-radius:2px;transform-origin:top;animation:grow .5s ease-out both}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.flower{position:absolute;animation:bloom .8s cubic-bezier(.3,1.5,.5,1) .35s both;transform-origin:center}
+.flower svg{width:100%;height:100%;animation:sway 4s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bloom{from{transform:scale(0) rotate(-120deg)}to{transform:scale(1) rotate(0)}}
+.bf{position:absolute;left:8%;top:60%;width:28px;height:24px;pointer-events:none;animation:bfly 18s ease-in-out infinite}
+.bf svg{width:100%;height:100%;animation:flap .32s ease-in-out infinite alternate;transform-origin:50% 50%}
+@keyframes flap{from{transform:scaleX(1)}to{transform:scaleX(.3)}}
+@keyframes bfly{
+  0%{left:6%;top:62%}
+  20%{left:30%;top:28%}
+  42%{left:56%;top:52%}
+  64%{left:82%;top:22%}
+  82%{left:90%;top:48%}
+  100%{left:6%;top:62%}
+}
+.count{text-align:center;color:var(--soft);font-size:14.5px;margin:14px 0 0;min-height:24px}
+
+/* kết */
+.finale{text-align:center;margin-top:70px}
+.finale .big{font-size:36px;line-height:1.25;color:var(--berry);margin:0 0 22px}
+.finale .after{margin:16px 0 0;color:var(--soft);font-size:14.5px;min-height:24px}
+.finale .foot{margin:46px 0 0;color:var(--soft);font-size:13px}
+.heart-fly{position:fixed;z-index:30;pointer-events:none;width:22px;height:22px;fill:var(--rose);left:0;top:0}
+
+/* gợi ý kéo xuống */
+.hint-scroll{
+  position:fixed;z-index:15;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
+  transform:translate(-50%,24px);opacity:0;pointer-events:none;
+  display:flex;align-items:center;gap:8px;
+  font:inherit;font-size:14px;font-weight:400;color:#fff;background:var(--btn);
+  border:0;border-radius:999px;padding:10px 18px 10px 20px;cursor:pointer;
+  box-shadow:0 10px 24px var(--shadow);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.hint-scroll.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.hint-scroll svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+
+/* bảng tuỳ chỉnh */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(60,15,35,.4);opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{
+  position:fixed;z-index:50;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;
+  background:var(--paper);color:var(--ink);
+  border-radius:26px 26px 0 0;padding:22px 22px calc(env(safe-area-inset-bottom,0px) + 22px);
+  transform:translateY(105%);transition:transform .4s cubic-bezier(.3,.9,.3,1);
+  box-shadow:0 -12px 40px rgba(0,0,0,.2);
+}
+.sheet.on{transform:none}
+.sheet h3{margin:0 0 4px;font-size:26px;color:var(--berry);line-height:1.3}
+.sheet p{margin:0 0 14px;font-size:13.5px;color:var(--soft)}
+.sheet label{display:block;font-size:13.5px;font-weight:400;margin:12px 0 5px}
+.sheet input,.sheet select{
+  width:100%;font:inherit;font-size:16px;color:var(--ink);
+  background:var(--note);border:1px solid var(--line);border-radius:14px;padding:11px 14px;
+}
+.sheet .row{display:flex;gap:10px;margin-top:18px}
+.sheet .row button{flex:1;font:inherit;font-size:15px;font-weight:500;border-radius:999px;padding:12px;cursor:pointer;border:1px solid var(--btn)}
+.sheet .row .main{background:var(--btn);color:#fff}
+.sheet .row .alt{background:transparent;color:var(--berry)}
+.sheet .msg{min-height:20px;margin:10px 0 0;font-size:13px;color:var(--soft)}
+
+@media (prefers-reduced-motion:reduce){
+  .petals,.blob,.bf{display:none}
+  .env-wrap,.garden .hint span,.flower svg,.crown svg,.spark,.hint-scroll svg{animation:none}
+  .letter .line.on,.content.enter{animation:none}
+  .js .rv{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+<!-- biểu tượng dùng chung -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 1C12.7 8 16 11.3 23 12 16 12.7 12.7 16 12 23 11.3 16 8 12.7 1 12 8 11.3 11.3 8 12 1z"/></symbol>
+  <symbol id="bloom" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="31" rx="14" ry="25" opacity=".92"/>
+    <ellipse cx="50" cy="31" rx="14" ry="25" opacity=".92" transform="rotate(60 50 50)"/>
+    <ellipse cx="50" cy="31" rx="14" ry="25" opacity=".92" transform="rotate(120 50 50)"/>
+    <ellipse cx="50" cy="31" rx="14" ry="25" opacity=".92" transform="rotate(180 50 50)"/>
+    <ellipse cx="50" cy="31" rx="14" ry="25" opacity=".92" transform="rotate(240 50 50)"/>
+    <ellipse cx="50" cy="31" rx="14" ry="25" opacity=".92" transform="rotate(300 50 50)"/>
+    <circle cx="50" cy="50" r="11" fill="#FFE08A"/>
+    <circle cx="46" cy="46" r="3.5" fill="#FFF6CC" opacity=".8"/>
+  </symbol>
+</svg>
+
+<div class="blob a" aria-hidden="true"></div>
+<div class="blob b" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+
+<!-- <button class="gear" id="openSheet" type="button">✎ Tuỳ chỉnh</button> -->
+<button class="hint-scroll" id="hint" type="button" aria-label="Kéo xuống để xem tiếp"><span>Kéo xuống nhé</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+
+<main class="app">
+  <!-- Màn 1: phong bì -->
+  <section class="intro" id="intro">
+    <p class="pre hand">Có một lá thư nhỏ</p>
+    <div class="env-wrap" id="envWrap">
+      <svg class="spark s1" aria-hidden="true"><use href="#star"/></svg>
+      <svg class="spark s2" aria-hidden="true"><use href="#star"/></svg>
+      <svg class="spark s3" aria-hidden="true"><use href="#star"/></svg>
+      <svg class="spark s4" aria-hidden="true"><use href="#star"/></svg>
+      <div class="env" aria-hidden="true">
+        <div class="back"></div>
+        <div class="paper"><i></i><i></i><i></i><i></i></div>
+        <div class="front"></div>
+        <div class="flap"></div>
+        <div class="seal"><svg viewBox="0 0 24 24"><use href="#heart"/></svg></div>
+      </div>
+    </div>
+    <p class="to" data-tpl="gửi riêng cho {to}"></p>
+    <button class="btn" id="openLetter" type="button">Mở thư</button>
+  </section>
+
+  <!-- Màn 2: thư -->
+  <div class="content" id="content" hidden>
+    <header class="head">
+      <div class="crown" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><use href="#bloom"/></svg>
+        <svg viewBox="0 0 100 100"><use href="#bloom"/></svg>
+        <svg viewBox="0 0 100 100"><use href="#bloom"/></svg>
+      </div>
+      <p class="date hand">20/10</p>
+      <p class="sub">Ngày Phụ nữ Việt Nam</p>
+    </header>
+
+    <article class="letter" id="letter">
+      <p class="line hand greet" data-tpl="Gửi Phương Anh,"></p>
+      <p class="line" data-tpl="Hôm nay là 20/10, nên {me} có một cái cớ rất đẹp để nhắn cho {you} một lời chúc. Mà thật ra, không có cớ nào {me} cũng muốn nhắn."></p>
+      <p class="line" data-tpl="Cảm ơn {you} vì đã làm những ngày của {me} vui hơn một chút, chỉ bằng vài tin nhắn và một nụ cười."></p>
+      <p class="line" data-tpl="Mong {you} luôn được là chính mình, vì {you} như thế đã đủ đáng mến lắm rồi."></p>
+      <p class="line" data-tpl="Ngay từ lúc mới quen, anh đã rất mến em, từ tính cách tới còn người của em."></p>
+      <p class="line hand sign"><span data-tpl="Cho nên, em có thể cho anh cơ hội, để được chính thức quan tâm, chăm sóc em bây giờ, và cả về sau được không."></span><small data-tpl="{sign}"></small></p>
+    </article>
+
+    <section class="block rv">
+      <div class="orn" aria-hidden="true"><span></span><svg viewBox="0 0 100 100"><use href="#bloom"/></svg><span></span></div>
+      <h2 class="hand" data-tpl="Ba điều {me} thấy dễ thương ở {you}"></h2>
+      <p class="lead">Chạm vào từng mẩu giấy nhé.</p>
+      <div class="notes">
+        <div class="note"><svg viewBox="0 0 24 24"><use href="#heart"/></svg><span data-tpl="Nụ cười của {you}. Nhìn thôi là thấy bớt mệt."></span></div>
+        <div class="note"><svg viewBox="0 0 24 24"><use href="#heart"/></svg><span data-tpl="Cách {you} quan tâm mọi người bằng những điều nhỏ xíu."></span></div>
+        <div class="note"><svg viewBox="0 0 24 24"><use href="#heart"/></svg><span data-tpl="Cách {you} kể chuyện, nghe hoài không chán."></span></div>
+      </div>
+    </section>
+
+    <section class="block rv">
+      <div class="orn" aria-hidden="true"><span></span><svg viewBox="0 0 100 100"><use href="#bloom"/></svg><span></span></div>
+      <h2 class="hand" data-tpl="Một khu vườn cho {you}"></h2>
+      <p class="lead">Chạm vào đâu cũng được, hoa sẽ mọc lên ở đó.</p>
+      <div class="garden" id="garden" role="button" tabindex="0" aria-label="Khu vườn. Chạm để trồng một bông hoa">
+        <div class="hint"><span>Chạm để trồng hoa</span></div>
+        <div class="bf" aria-hidden="true"><svg viewBox="0 0 28 24"><ellipse cx="8" cy="8" rx="8" ry="7" fill="#FF9EBE"/><ellipse cx="20" cy="8" rx="8" ry="7" fill="#FFB7CF"/><ellipse cx="9" cy="17" rx="5.5" ry="5" fill="#F77FA8"/><ellipse cx="19" cy="17" rx="5.5" ry="5" fill="#FF9EBE"/><rect x="13" y="3" width="2" height="18" rx="1" fill="#8C5069"/></svg></div>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+    </section>
+
+    <section class="finale rv">
+      <div class="orn" aria-hidden="true"><span></span><svg viewBox="0 0 100 100"><use href="#bloom"/></svg><span></span></div>
+      <p class="big hand" data-tpl="Và một điều nhỏ nữa…"></p>
+      <button class="btn" id="hug" type="button">Gửi một nụ cười</button>
+      <p class="after" id="after" aria-live="polite"></p>
+      <p class="foot">20/10 · gửi kèm một chút nắng</p>
+    </section>
+  </div>
+</main>
+
+<!-- Bảng tuỳ chỉnh -->
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
+  <h3 class="hand" id="sheetTitle">Viết cho người ấy</h3>
+  <p>Đổi cách xưng hô và tên, rồi sao chép link để gửi đi.</p>
+  <label for="pron">Xưng hô</label>
+  <select id="pron">
+    <option value="0">Anh gửi em</option>
+    <option value="1">Mình gửi bạn</option>
+    <option value="2">Em gửi chị</option>
+  </select>
+  <label for="to">Tên người nhận</label>
+  <input id="to" type="text" maxlength="30" placeholder="Ví dụ: Lan">
+  <label for="from">Tên người gửi</label>
+  <input id="from" type="text" maxlength="30" placeholder="Để trống nếu muốn ký thân mật">
+  <div class="row">
+    <button class="alt" id="copy" type="button">Sao chép link</button>
+    <button class="main" id="done" type="button">Xong</button>
+  </div>
+  <p class="msg" id="msg" aria-live="polite"></p>
+</div>
+
+<script>
+(function(){
+  var $ = function(s){return document.querySelector(s)};
+  document.documentElement.classList.add('js');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var PRON = [{me:'anh',you:'em'},{me:'mình',you:'bạn'},{me:'em',you:'chị'}];
+  var state = {p:0,to:'',from:''};
+
+  try{
+    var h = new URLSearchParams(location.hash.replace(/^#/,''));
+    if(h.has('p')||h.has('to')||h.has('from')){
+      state.p = Math.min(2,Math.max(0,parseInt(h.get('p')||'0',10)||0));
+      state.to = (h.get('to')||'').slice(0,30);
+      state.from = (h.get('from')||'').slice(0,30);
+    } else {
+      var saved = JSON.parse(localStorage.getItem('n2010')||'null');
+      if(saved){state.p=saved.p||0;state.to=saved.to||'';state.from=saved.from||''}
+    }
+  }catch(e){}
+
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+  function render(){
+    var pr = PRON[state.p], me = pr.me, you = pr.you;
+    var to = state.to.trim() || you;
+    var sign = state.from.trim() || cap(me);
+    document.querySelectorAll('[data-tpl]').forEach(function(el){
+      el.textContent = el.getAttribute('data-tpl')
+        .replace(/\{Me\}/g,cap(me)).replace(/\{You\}/g,cap(you))
+        .replace(/\{me\}/g,me).replace(/\{you\}/g,you)
+        .replace(/\{to\}/g,to).replace(/\{sign\}/g,sign);
+    });
+    try{localStorage.setItem('n2010',JSON.stringify(state))}catch(e){}
+  }
+  function buildHash(){
+    var u = new URLSearchParams();
+    u.set('p',state.p); if(state.to.trim())u.set('to',state.to.trim()); if(state.from.trim())u.set('from',state.from.trim());
+    return u.toString();
+  }
+  render();
+
+  /* cánh hoa rơi */
+  var petals = $('#petals');
+  if(!reduce){
+    for(var i=0;i<16;i++){
+      var d = document.createElement('div'); d.className='petal';
+      var s = 9 + Math.random()*11;
+      d.style.cssText = 'left:'+(Math.random()*100)+'%;width:'+s+'px;height:'+s+'px;'+
+        '--dx:'+((Math.random()*160)-80)+'px;animation-duration:'+(11+Math.random()*10)+'s;'+
+        'animation-delay:'+(-Math.random()*20)+'s;opacity:'+(.45+Math.random()*.4);
+      petals.appendChild(d);
+    }
+  }
+
+  /* gợi ý kéo xuống */
+  var hint = $('#hint'), armed = false;
+  function updateHint(){
+    if(!armed){hint.classList.remove('show');return}
+    var fb = document.querySelector('.block');
+    var top = fb.getBoundingClientRect().top;
+    var y = window.pageYOffset||0;
+    var nearBottom = document.documentElement.scrollHeight-(y+window.innerHeight) < 120;
+    hint.classList.toggle('show', top > window.innerHeight*0.72 && !nearBottom);
+  }
+  window.addEventListener('scroll',updateHint,{passive:true});
+  window.addEventListener('resize',updateHint);
+  hint.addEventListener('click',function(){
+    window.scrollBy({top:window.innerHeight*0.75,behavior:reduce?'auto':'smooth'});
+  });
+
+  /* tự cuộn theo khi thư hiện dần */
+  var follow = true;
+  function stopFollow(){follow=false}
+  window.addEventListener('touchstart',stopFollow,{passive:true});
+  window.addEventListener('wheel',stopFollow,{passive:true});
+  function followEl(el){
+    if(!follow)return;
+    var r = el.getBoundingClientRect(), limit = window.innerHeight-130;
+    if(r.bottom>limit){window.scrollBy({top:r.bottom-limit+10,behavior:reduce?'auto':'smooth'})}
+  }
+
+  /* mở thư */
+  var intro = $('#intro'), content = $('#content'), opening = false;
+  function openLetter(){
+    if(opening)return; opening = true;
+    intro.classList.add('opened');
+    
+    setTimeout(function(){
+      intro.classList.add('fixed'); content.hidden = false;
+      content.classList.add('enter');
+      window.scrollTo(0,0); void intro.offsetWidth; intro.classList.add('leave'); setTimeout(function(){intro.hidden = true},reduce?0:1000);
+      var lines = document.querySelectorAll('#letter .line');
+      lines.forEach(function(l,i){
+        setTimeout(function(){
+          l.classList.add('on');
+          setTimeout(function(){followEl(l)},60);
+          if(i===lines.length-1){
+            setTimeout(function(){armed=true;updateHint()},reduce?0:1400);
+          }
+        }, reduce?0:(i===0?900:900+i*1250));
+      });
+      observe();
+    },reduce?50:1500);
+  }
+  $('#openLetter').addEventListener('click',openLetter);
+  $('#envWrap').addEventListener('click',openLetter);
+
+  /* hiện dần khi cuộn tới */
+  function observe(){
+    var els = document.querySelectorAll('.rv');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+    },{threshold:.12});
+    els.forEach(function(e){io.observe(e)});
+  }
+
+  /* mẩu giấy */
+  document.querySelectorAll('.note').forEach(function(n){
+    n.addEventListener('click',function(){
+      var ic = n.querySelector('svg');
+      if(ic && ic.animate && !reduce){
+        ic.animate([{transform:'scale(1)'},{transform:'scale(1.7) rotate(-12deg)'},{transform:'scale(1)'}],{duration:480,easing:'cubic-bezier(.3,1.5,.5,1)'});
+      }
+    });
+  });
+
+  /* khu vườn */
+  var garden = $('#garden'), count = $('#count'), planted = 0;
+  var COLORS = ['#FF9EBE','#FFB7CF','#F77FA8','#FFC9DA','#FFA6B8','#FFD1C2','#E96A9A'];
+  function flowerSVG(c){
+    return '<svg viewBox="0 0 100 100" aria-hidden="true" style="fill:'+c+'"><use href="#bloom"/></svg>';
+  }
+  function plant(x,y){
+    var r = garden.getBoundingClientRect();
+    var size = 46 + Math.random()*28;
+    var stem = document.createElement('div'); stem.className='stem';
+    stem.style.cssText='left:'+(x-1)+'px;top:'+y+'px;height:'+Math.max(10,r.height-y)+'px';
+    var f = document.createElement('div'); f.className='flower';
+    f.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(x-size/2)+'px;top:'+(y-size/2)+'px';
+    f.innerHTML = flowerSVG(COLORS[Math.floor(Math.random()*COLORS.length)]);
+    garden.appendChild(stem); garden.appendChild(f);
+    garden.classList.add('planted');
+    planted++;
+    var pr = PRON[state.p];
+    if(planted<5) count.textContent = 'Đã trồng '+planted+' bông';
+    else if(planted<12) count.textContent = 'Đã '+planted+' bông rồi, vườn đang thơm lên đấy.';
+    else count.textContent = 'Cả khu vườn nở vì '+pr.you+'.';
+    if(garden.querySelectorAll('.flower').length>45){
+      var fs=garden.querySelector('.flower'), ss=garden.querySelector('.stem');
+      if(fs)fs.remove(); if(ss)ss.remove();
+    }
+  }
+  garden.addEventListener('pointerdown',function(e){
+    var r = garden.getBoundingClientRect();
+    var x = Math.min(Math.max(e.clientX-r.left,28),r.width-28);
+    var y = Math.min(Math.max(e.clientY-r.top,40),r.height-60);
+    plant(x,y);
+  });
+  garden.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      var r = garden.getBoundingClientRect();
+      plant(30+Math.random()*(r.width-60),50+Math.random()*(r.height-120));
+    }
+  });
+
+  /* nụ cười (tim bay) */
+  var hugs = 0;
+  $('#hug').addEventListener('click',function(e){
+    hugs++;
+    var b = e.currentTarget.getBoundingClientRect();
+    var cx = b.left+b.width/2, cy = b.top+b.height/2;
+    var n = reduce?0:22;
+    for(var i=0;i<n;i++){
+      var hh = document.createElement('div'); hh.className='heart-fly';
+      hh.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22"><use href="#heart"/></svg>';
+      var sc = .6+Math.random()*1.1;
+      hh.style.left=(cx-11)+'px'; hh.style.top=(cy-11)+'px'; hh.style.opacity='0';
+      document.body.appendChild(hh);
+      var dx=(Math.random()-.5)*260, dy=-(120+Math.random()*320), rot=(Math.random()-.5)*80;
+      (function(hh,dx,dy,rot,sc,i){
+        var a = hh.animate([
+          {transform:'translate(0,0) scale(.2) rotate(0deg)',opacity:0},
+          {transform:'translate('+(dx*.3)+'px,'+(dy*.3)+'px) scale('+sc+') rotate('+(rot/2)+'deg)',opacity:1,offset:.25},
+          {transform:'translate('+dx+'px,'+dy+'px) scale('+sc*.9+') rotate('+rot+'deg)',opacity:0}
+        ],{duration:1700+Math.random()*900,delay:i*35,easing:'cubic-bezier(.2,.7,.3,1)',fill:'both'});
+        a.onfinish=function(){hh.remove()};
+      })(hh,dx,dy,rot,sc,i);
+    }
+    var msgs = ['Nụ cười đã đến nơi rồi.','Thêm một cái nữa nhé.','Cười nhiều thế này chắc là vui thật rồi.','Hôm nay cười bao nhiêu cũng được.'];
+    $('#after').textContent = msgs[Math.min(hugs-1,msgs.length-1)];
+  });
+
+  /* bảng tuỳ chỉnh */
+  var sheet = $('#sheet'), scrim = $('#scrim'), msg = $('#msg');
+  function openSheet(){
+    $('#pron').value = state.p; $('#to').value = state.to; $('#from').value = state.from;
+    msg.textContent='';
+    sheet.classList.add('on'); scrim.classList.add('on'); sheet.setAttribute('aria-hidden','false');
+    setTimeout(function(){$('#pron').focus()},300);
+  }
+  function closeSheet(){
+    sheet.classList.remove('on'); scrim.classList.remove('on'); sheet.setAttribute('aria-hidden','true');
+    $('#openSheet').focus();
+  }
+  $('#openSheet').addEventListener('click',openSheet);
+  $('#done').addEventListener('click',closeSheet);
+  scrim.addEventListener('click',closeSheet);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sheet.classList.contains('on'))closeSheet()});
+  function sync(){
+    state.p = parseInt($('#pron').value,10)||0;
+    state.to = $('#to').value; state.from = $('#from').value;
+    render();
+    try{history.replaceState(null,'','#'+buildHash())}catch(e){}
+  }
+  ['pron','to','from'].forEach(function(id){
+    $('#'+id).addEventListener('input',sync);
+    $('#'+id).addEventListener('change',sync);
+  });
+  $('#copy').addEventListener('click',function(){
+    sync();
+    var link = location.href.split('#')[0]+'#'+buildHash();
+    var done = function(){msg.textContent='Đã sao chép link. Gửi cho người ấy nhé.'};
+    var fallback = function(){
+      var t=document.createElement('input'); t.value=link; t.style.cssText='position:fixed;opacity:0;left:0;top:0';
+      document.body.appendChild(t); t.select();
+      try{document.execCommand('copy'); done()}catch(e){msg.textContent='Hãy giữ và sao chép link trên thanh địa chỉ.'}
+      t.remove();
+    };
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(link).then(done,fallback)}
+      else fallback();
+    }catch(e){fallback()}
+  });
+})();
+</script>
+</body>
+</html>
